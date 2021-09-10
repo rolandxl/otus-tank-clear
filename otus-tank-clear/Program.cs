@@ -8,7 +8,7 @@ namespace otus_tank_clear
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Старт программы");
+			Console.WriteLine("Старт программы!");
 
 			Tank tank = new();
 
