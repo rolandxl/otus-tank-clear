@@ -21,17 +21,13 @@ namespace nUnitTests
         public void TestNullPosition()
         {
             tank.SetProperty("velocity", new Vector3(1, 0, 1));
-            move.Execute();
             Assert.IsNull(move.Execute());
-         //   Assert.Pass();
         }
         [Test]
         public void TestNullVelocity()
         {
             tank.SetProperty("position", new Vector3(1, 0, 1));
-            move.Execute();
             Assert.IsNull(move.Execute());
-          //  Assert.Pass();
         }
         [Test]
         public void TestSimpleMove()
@@ -40,7 +36,6 @@ namespace nUnitTests
             tank.SetProperty("velocity", new Vector3(-7, 0, 3));
             move.Execute();
             Assert.IsTrue((Vector3)tank.GetProperty("position") == new Vector3(5, 0, 8));
-           // Assert.Pass();
         }
     }
 }
