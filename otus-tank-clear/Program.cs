@@ -181,7 +181,7 @@ namespace otus_tank_clear
 	}
 
 	//создаем интерфейс универсального объекта контейнера, от которого будет наследоваться всё что нам необходимо
-	interface IUObject
+	public interface IUObject
 	{
 		object GetProperty(string key);
 		void SetProperty(string key, object value);
@@ -189,7 +189,7 @@ namespace otus_tank_clear
 
 
 	//реализуем интерфейс в класс 
-	class Tank : IUObject
+	public class Tank : IUObject
 	{
 		public Tank()
 		{
@@ -217,13 +217,13 @@ namespace otus_tank_clear
 
 
 	//создаем интерфейс команды для последующей реалиции его через конкретные механики 
-	interface ICommand
+	public interface ICommand
 	{
 		//void Execute();
 		List<string> Execute();
 	}
 
-	class MacroCommand : ICommand
+	public class MacroCommand : ICommand
 	{
 		readonly ICommand[] commands;
 		public MacroCommand(ICommand[] commands)
@@ -249,7 +249,7 @@ namespace otus_tank_clear
 	}
 
 	//создаем интерфейс объекта который движется
-	interface IMovable
+	public interface IMovable
 	{
 		Vector3 GetPosition();
 		void SetPosition(Vector3 newValue);
@@ -258,7 +258,7 @@ namespace otus_tank_clear
 
 
 	//создаем класс-адаптер реализующий интерфейс движение 
-	class MovableAdapter : IMovable
+	public class MovableAdapter : IMovable
 	{
 		readonly IUObject Obj;
 		public MovableAdapter(IUObject Obj)
@@ -283,7 +283,7 @@ namespace otus_tank_clear
 	}
 
 	//создаем реализацию команды перемещения в виде класса
-	class Move : ICommand
+	public class Move : ICommand
 	{
 		readonly IMovable movable;
 		public Move(IMovable movable)
@@ -300,14 +300,14 @@ namespace otus_tank_clear
 
 	//всё тоже самое с вращением
 
-	interface IRotateable
+	public interface IRotateable
 	{
 		Quaternion GetRotation();
 		void SetRotation(Quaternion newValue);
 		void GetRotate(ref Vector3 axis, ref float angle);
 	}
 
-	class RotateableAdapter : IRotateable
+	public class RotateableAdapter : IRotateable
 	{
 		readonly IUObject Obj;
 		public RotateableAdapter(IUObject Obj)
@@ -334,7 +334,7 @@ namespace otus_tank_clear
 		}
 	}
 
-	class Rotate : ICommand
+	public class Rotate : ICommand
 	{
 		readonly IRotateable rotateable;
 		public Rotate(IRotateable rotateable)
