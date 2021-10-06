@@ -21,13 +21,13 @@ namespace nUnitTests
         public void TestNullPosition()
         {
             tank.SetProperty("velocity", new Vector3(1, 0, 1));
-            Assert.IsNull(move.Execute());
+            Assert.Catch(() => move.Execute(), "Exeption not recived");
         }
         [Test]
         public void TestNullVelocity()
         {
             tank.SetProperty("position", new Vector3(1, 0, 1));
-            Assert.IsNull(move.Execute());
+            Assert.Catch(() => move.Execute(), "Exeption not recived");
         }
         [Test]
         public void TestSimpleMove()

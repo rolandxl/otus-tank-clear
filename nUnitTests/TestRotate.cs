@@ -22,21 +22,21 @@ namespace nUnitTests
         {
             tank.SetProperty("angle", 30f);
             tank.SetProperty("axis", new Vector3(0, 1, 0));
-            Assert.IsNull(rotate.Execute());
+            Assert.Catch(()=>rotate.Execute(), "Exeption not recived");
         }
         [Test]
         public void TestNullAngle()
         {
             tank.SetProperty("rotation", new Quaternion());
             tank.SetProperty("axis", new Vector3(0, 1, 0));
-            Assert.IsNull(rotate.Execute());
+            Assert.Catch(() => rotate.Execute(), "Exeption not recived");
         }
         [Test]
         public void TestNullAxis()
         {
             tank.SetProperty("rotation", new Quaternion());
             tank.SetProperty("angle", 30f);
-            Assert.IsNull(rotate.Execute());
+            Assert.Catch(() => rotate.Execute(), "Exeption not recived");
         }
         [Test]
         public void TestSimpleRotate()
