@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Numerics;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace otus_tank_clear
 {
@@ -9,174 +11,6 @@ namespace otus_tank_clear
 		static void Main(string[] args)
 		{
 			Console.WriteLine("Старт программы!");
-
-			Tank tank = new();
-
-			ICommand move = new Move(new MovableAdapter(tank));
-			Console.WriteLine($"Инициализация механики движения танка прошла {move}");
-
-			tank.ClearPropertys();
-			tank.SetProperty("position", new Vector3(1, 0, 1));
-			Console.WriteLine($"Установим только position и подвинем");
-			Console.WriteLine($"position: {tank.GetProperty("position")}, velocity: {tank.GetProperty("velocity")}");
-
-			try
-			{
-				move.Execute();
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e.Message);
-			}
-
-			tank.ClearPropertys();
-			tank.SetProperty("velocity", new Vector3(0, 1, 0));
-			Console.WriteLine($"Установим только velocity и подвинем");
-			Console.WriteLine($"position: {tank.GetProperty("position")}, velocity: {tank.GetProperty("velocity")}");
-
-			try
-			{
-				move.Execute();
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e.Message);
-			}
-
-
-			tank.SetProperty("position", new Vector3(12, 0, 5));
-			tank.SetProperty("velocity", new Vector3(-7, 0, 3));
-			Console.WriteLine($"Начальная инициализация свойств танка прошла, position: {new Vector3(12, 0, 5)}, velocity: {new Vector3(-7, 0, 3)}");
-
-			move.Execute();
-			Console.WriteLine($"Выполнили механику движение. position: {tank.GetProperty("position")}, velocity: {tank.GetProperty("velocity")}");
-			if ((Vector3)tank.GetProperty("position") != new Vector3(5, 0, 8)) Console.WriteLine($"Ошибка в модуле движения");
-
-
-			ICommand rotate = new Rotate(new RotateableAdapter(tank));
-			Console.WriteLine($"Инициализация механики поворота танка прошла {rotate}");
-
-
-			tank.ClearPropertys();
-			tank.SetProperty("angle", 30f);
-			tank.SetProperty("axis", new Vector3(0, 1, 0));
-			Console.WriteLine($"Установим только angle и axis и повернем");
-			Console.WriteLine($"rotation: {tank.GetProperty("rotation")}, axis: {tank.GetProperty("axis")}, angle: {tank.GetProperty("angle")}");
-
-			try
-			{
-				rotate.Execute();
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e.Message);
-			}
-
-
-			tank.ClearPropertys();
-			tank.SetProperty("rotation", new Quaternion());
-			tank.SetProperty("axis", new Vector3(0, 1, 0));
-			Console.WriteLine($"Установим только rotation и axis и повернем");
-			Console.WriteLine($"rotation: {tank.GetProperty("rotation")}, axis: {tank.GetProperty("axis")}, angle: {tank.GetProperty("angle")}");
-
-			try
-			{
-				rotate.Execute();
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e.Message);
-			}
-
-
-			tank.ClearPropertys();
-			tank.SetProperty("rotation", new Quaternion());
-			tank.SetProperty("angle", 30f);
-			Console.WriteLine($"Установим только rotation и angle и повернем");
-			Console.WriteLine($"rotation: {tank.GetProperty("rotation")}, axis: {tank.GetProperty("axis")}, angle: {tank.GetProperty("angle")}");
-
-			try
-			{
-				rotate.Execute();
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e.Message);
-			}
-
-			tank.ClearPropertys();
-			tank.SetProperty("rotation", new Quaternion(1, 1, 1, 1));
-			tank.SetProperty("angle", 30f);
-			tank.SetProperty("axis", new Vector3(0, 1, 0));
-			Console.WriteLine($"Установим все значения поворота и повернем");
-			Console.WriteLine($"rotation: {tank.GetProperty("rotation")}, axis: {tank.GetProperty("axis")}, angle: {tank.GetProperty("angle")}");
-
-			try
-			{
-				rotate.Execute();
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e.Message);
-			}
-
-			Console.WriteLine($"rotation: {tank.GetProperty("rotation")}, axis: {tank.GetProperty("axis")}, angle: {tank.GetProperty("angle")}");
-
-
-
-			tank.SetProperty("angle", -90f);
-			tank.SetProperty("axis", new Vector3(0, 1, 0));
-			Console.WriteLine($"Повернем отсительно текущего положения");
-			Console.WriteLine($"rotation: {tank.GetProperty("rotation")}, axis: {tank.GetProperty("axis")}, angle: {tank.GetProperty("angle")}");
-
-			try
-			{
-				rotate.Execute();
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e.Message);
-			}
-
-			Console.WriteLine($"rotation: {tank.GetProperty("rotation")}, axis: {tank.GetProperty("axis")}, angle: {tank.GetProperty("angle")}");
-
-
-
-			ICommand[] aa = {new Move(new MovableAdapter(tank)),
-				new Rotate(new RotateableAdapter(tank))};
-			ICommand action = new MacroCommand(aa);
-
-
-			tank.SetProperty("position", new Vector3(12, 0, 5));
-			tank.SetProperty("velocity", new Vector3(-7, 0, 3));
-			tank.SetProperty("rotation", new Quaternion(1, 1, 1, 1));
-			tank.SetProperty("angle", 30f);
-			tank.SetProperty("axis", new Vector3(0, 1, 0));
-
-			Console.WriteLine($"Теперь через макрокоманды выполним всё разом");
-			action.Execute();
-
-			Console.WriteLine($"position: {tank.GetProperty("position")}, velocity: {tank.GetProperty("velocity")}, rotation: {tank.GetProperty("rotation")}, axis: {tank.GetProperty("axis")}, angle: {tank.GetProperty("angle")}");
-
-
-
-			tank.ClearPropertys();
-			//tank.SetProperty("position", new Vector3(12, 0, 5));
-			tank.SetProperty("velocity", new Vector3(-7, 0, 3));
-			//tank.SetProperty("rotation", new Quaternion(1, 1, 1, 1));
-			tank.SetProperty("angle", 30f);
-			tank.SetProperty("axis", new Vector3(0, 1, 0));
-
-			Console.WriteLine($"Теперь через макрокоманды c выводом выведем ошибок");
-			List<string> errors = action.Execute();
-			foreach (var i in errors)
-				Console.WriteLine(i);
-
-			Console.WriteLine($"position: {tank.GetProperty("position")}, velocity: {tank.GetProperty("velocity")}, rotation: {tank.GetProperty("rotation")}, axis: {tank.GetProperty("axis")}, angle: {tank.GetProperty("angle")}");
-
-
-			Console.ReadLine();
-
 		}
 	}
 
@@ -285,6 +119,7 @@ namespace otus_tank_clear
 	//создаем реализацию команды перемещения в виде класса
 	public class Move : ICommand
 	{
+		Random random = new();
 		readonly IMovable movable;
 		public Move(IMovable movable)
 		{
@@ -293,6 +128,8 @@ namespace otus_tank_clear
 
 		public List<string> Execute()
 		{
+			
+			Thread.Sleep(random.Next(3000));
 			movable.SetPosition(movable.GetPosition() + movable.GetVelocity());
 			return null;
 		}
@@ -336,6 +173,7 @@ namespace otus_tank_clear
 
 	public class Rotate : ICommand
 	{
+		Random random = new();
 		readonly IRotateable rotateable;
 		public Rotate(IRotateable rotateable)
 		{
@@ -344,6 +182,8 @@ namespace otus_tank_clear
 
 		public List<string> Execute()
 		{
+			
+			Thread.Sleep(random.Next(3000));
 			Vector3 axis = new();
 			float angle = 0;
 			rotateable.GetRotate(ref axis, ref angle);
