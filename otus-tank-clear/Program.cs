@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace otus_tank_clear
+namespace OtusTankClear
 {
 	class Program
 	{
@@ -40,11 +40,6 @@ namespace otus_tank_clear
 			if (Propertys.ContainsKey(key))
 				Propertys[key] = value;
 			else Propertys.TryAdd(key, value);
-		}
-
-		public void ClearPropertys()
-		{
-			Propertys.Clear();
 		}
 		Dictionary<string, object> Propertys;
 	}
@@ -126,7 +121,7 @@ namespace otus_tank_clear
 
 		public void Execute()
 		{
-			Thread.Sleep(random.Next(3000));
+			Thread.Sleep(random.Next(1000));
 			movable.SetPosition(movable.GetPosition() + movable.GetVelocity());
 		}
 	}
@@ -178,16 +173,12 @@ namespace otus_tank_clear
 
 		public void Execute()
 		{
-			Thread.Sleep(random.Next(3000));
+			Thread.Sleep(random.Next(1000));
 			Vector3 axis = new();
 			float angle = 0;
 			rotateable.GetRotate(ref axis, ref angle);
 			rotateable.SetRotation(rotateable.GetRotation() * Quaternion.CreateFromAxisAngle(axis, angle));
 		}
 	}
-
-
-	//создаем интерфейс универсального объекта контейнера, от которого будет наследоваться всё что нам необходимо
-
 }
 

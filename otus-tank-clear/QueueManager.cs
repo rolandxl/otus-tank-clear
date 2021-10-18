@@ -5,31 +5,35 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace otus_tank_clear
+namespace OtusTankClear
 {
 	public class Queue
     {
 		List<Action> actionList;
 		Task Dispatcher;
 		public enum State {active, inactive}
-		public State QueueState; 
+
+		volatile State QueueState;
+
+		public State GetQueueState
+		{
+			get { return QueueState; }
+		}
 		public Queue()
         {
 			QueueState = State.inactive;
 			actionList = new List<Action>();
         }	
 
-		public List<Action> GetActionList()
+		public List<Action> GetActionList
         {
-			return actionList;
+			get { return actionList; }
 		}
 
 
 		public void InputAction(Action action)
         {
-			//if (QueueState == State.active)
-				actionList.Add(action);
-		//	else throw new Exception("Queue is inactive");
+			actionList.Add(action);
 		}
 
 
@@ -43,7 +47,6 @@ namespace otus_tank_clear
 					currentTask = Task.Run(actionList[0]);
 					actionList.RemoveAt(0);
 				}
-				Thread.Sleep(1000);
 			}		
         }
 
@@ -79,7 +82,7 @@ namespace otus_tank_clear
 				{
 					while (actionList.Count>0)
 					{
-						Thread.Sleep(1000);
+
 					}
 					QueueState = State.inactive;
 				});
@@ -87,4 +90,10 @@ namespace otus_tank_clear
 			else throw new Exception("Queue already stoped");
 		}
     }
+
+	public interface IQueueStop
+	{
+		Queue.State GetState();
+		void SetState(Queue.State state);
+	}
 }

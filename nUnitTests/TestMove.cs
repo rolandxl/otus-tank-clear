@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using otus_tank_clear;
+using OtusTankClear;
 using System.Numerics;
 
 namespace nUnitTests
@@ -14,7 +14,6 @@ namespace nUnitTests
         {
             tank = new();
             move = new Move(new MovableAdapter(tank));
-            tank.ClearPropertys();
         }
 
         [Test]

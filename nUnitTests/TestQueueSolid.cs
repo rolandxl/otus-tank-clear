@@ -7,25 +7,29 @@ using System.Threading;
 namespace nUnitTests
 {
 	[TestFixture]
-	public class TestQueue
+	public class TestQueueSolid
 	{
 		Tank tank;
 		ICommand action;
-		Queue queue;
+		QueueSolid queue;
+		ICommand queueSwich;
+
 		[SetUp]
 		public void Setup()
 		{
 			tank = new();
 			action = new Move(new MovableAdapter(tank));
-			queue = new Queue();
+			queue = new QueueSolid();			
 			tank.SetProperty("position", new Vector3(12, 0, 5));
 			tank.SetProperty("velocity", new Vector3(1, 0, 1));
+			queue.SetProperty("state", "inactive");
 		}
 
 		[Test]
 		public void TestStartQueue()
         {
-			Assert.IsTrue(queue.Start(), "Queue start fail");
+			queueSwich = new QueueStart(new SwichableAdapter(queue));
+			queueSwich.Execute();
 
 			queue.InputAction(()=> action.Execute());
 			queue.InputAction(() => action.Execute());
@@ -48,17 +52,16 @@ namespace nUnitTests
 			queue.InputAction(() => action.Execute());
 			queue.InputAction(() => action.Execute());
 
-			queue.Start();
+			queueSwich = new QueueStart(new SwichableAdapter(queue));
+			queueSwich.Execute();
+			Thread.Sleep(1000);
 
-			Thread.Sleep(3000);
-
-			queue.HardStop();
+			queueSwich = new QueueStopHard(new SwichableAdapter(queue));
+			queueSwich.Execute();
 
 			var countActions = queue.GetActionList.Count;
-
-			Thread.Sleep(3000);
-
-			Assert.IsTrue(queue.GetActionList.Count == countActions && queue.GetQueueState == Queue.State.inactive, "HardStop not work");
+			Thread.Sleep(1000);
+			Assert.IsTrue(queue.GetActionList.Count == countActions && (string)queue.GetProperty("state") == "inactive", "HardStop not work");
 		}
 		[Test]
 		public void TestSoftStopQueue()
@@ -69,15 +72,19 @@ namespace nUnitTests
 			queue.InputAction(() => action.Execute());
 			queue.InputAction(() => action.Execute());
 
-			queue.Start();
-			Task currentTask = queue.SoftStop();
+			queueSwich = new QueueStart(new SwichableAdapter(queue));
+			queueSwich.Execute();
 
-			while (!currentTask.IsCompleted)
+			queueSwich = new QueueStopSoft(new SwichableAdapter(queue));
+			queueSwich.Execute();
+
+
+			while ((string)queue.GetProperty("state") == "active")
 			{
 
 			}
 
-			Assert.IsTrue(queue.GetActionList.Count == 0 && queue.GetQueueState == Queue.State.inactive, "SoftStop not work");
+			Assert.IsTrue(queue.GetActionList.Count == 0, $"SoftStop not work {queue.GetActionList.Count}");
 		}
 	}
 }

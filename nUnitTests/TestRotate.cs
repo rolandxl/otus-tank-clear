@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using otus_tank_clear;
+using OtusTankClear;
 using System.Numerics;
 
 namespace nUnitTests
@@ -14,7 +14,7 @@ namespace nUnitTests
         {
             tank = new();
             rotate = new Rotate(new RotateableAdapter(tank));
-            tank.ClearPropertys();
+           // tank.ClearPropertys();
         }
 
         [Test]
