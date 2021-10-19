@@ -5,7 +5,7 @@ using System.Numerics;
 namespace nUnitTests
 {
     [TestFixture]
-    public class TestRotate
+    public class UTestRotate
     {
         Tank tank;
         ICommand rotate;
