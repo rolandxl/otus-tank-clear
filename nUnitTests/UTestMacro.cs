@@ -8,7 +8,6 @@ namespace nUnitTests
     public class UTestMacro
     {
         Tank tank;
-        ICommand command;
         MacroCommand splitCommands;
         ICommand[] macroCommands;
 
