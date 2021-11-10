@@ -5,7 +5,7 @@ using System.Numerics;
 namespace nUnitTests
 {
     [TestFixture]
-    public class TestMove
+    public class UTestMove
     {
         Tank tank;
         ICommand move;
