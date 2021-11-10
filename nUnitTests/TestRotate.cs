@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using otus_tank_clear;
+using OtusTankClear;
 using System.Numerics;
 
 namespace nUnitTests
@@ -14,7 +14,7 @@ namespace nUnitTests
         {
             tank = new();
             rotate = new Rotate(new RotateableAdapter(tank));
-            tank.ClearPropertys();
+           // tank.ClearPropertys();
         }
 
         [Test]
@@ -22,21 +22,21 @@ namespace nUnitTests
         {
             tank.SetProperty("angle", 30f);
             tank.SetProperty("axis", new Vector3(0, 1, 0));
-            Assert.IsNull(rotate.Execute());
+            Assert.Catch(()=>rotate.Execute(), "Exeption not recived");
         }
         [Test]
         public void TestNullAngle()
         {
             tank.SetProperty("rotation", new Quaternion());
             tank.SetProperty("axis", new Vector3(0, 1, 0));
-            Assert.IsNull(rotate.Execute());
+            Assert.Catch(() => rotate.Execute(), "Exeption not recived");
         }
         [Test]
         public void TestNullAxis()
         {
             tank.SetProperty("rotation", new Quaternion());
             tank.SetProperty("angle", 30f);
-            Assert.IsNull(rotate.Execute());
+            Assert.Catch(() => rotate.Execute(), "Exeption not recived");
         }
         [Test]
         public void TestSimpleRotate()

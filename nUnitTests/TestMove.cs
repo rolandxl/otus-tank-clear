@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using otus_tank_clear;
+using OtusTankClear;
 using System.Numerics;
 
 namespace nUnitTests
@@ -14,20 +14,19 @@ namespace nUnitTests
         {
             tank = new();
             move = new Move(new MovableAdapter(tank));
-            tank.ClearPropertys();
         }
 
         [Test]
         public void TestNullPosition()
         {
             tank.SetProperty("velocity", new Vector3(1, 0, 1));
-            Assert.IsNull(move.Execute());
+            Assert.Catch(() => move.Execute(), "Exeption not recived");
         }
         [Test]
         public void TestNullVelocity()
         {
             tank.SetProperty("position", new Vector3(1, 0, 1));
-            Assert.IsNull(move.Execute());
+            Assert.Catch(() => move.Execute(), "Exeption not recived");
         }
         [Test]
         public void TestSimpleMove()
