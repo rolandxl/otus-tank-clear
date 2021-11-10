@@ -6,7 +6,7 @@ namespace OtusTankClear
 {
 
 	//Проверка бензина
-	public interface ICheckFuelComamnd
+	public interface ICheckableFuel
 	{
 		float GetCurrentFuelLevel();
 		float GetLowFuelLevel();
@@ -14,7 +14,7 @@ namespace OtusTankClear
 	}
 
 
-	public class CheckFuelAdapter : ICheckFuelComamnd
+	public class CheckFuelAdapter : ICheckableFuel
 	{
 		readonly IUObject Obj;
 		public CheckFuelAdapter(IUObject Obj)
@@ -43,8 +43,8 @@ namespace OtusTankClear
 	public class CheckFuel : ICommand
 	{
 		Random random = new();
-		readonly ICheckFuelComamnd check;
-		public CheckFuel(ICheckFuelComamnd check)
+		readonly ICheckableFuel check;
+		public CheckFuel(ICheckableFuel check)
 		{
 			this.check = check;
 		}
@@ -58,7 +58,7 @@ namespace OtusTankClear
 
 	//Сжигание бензина
 
-	public interface IBurnFuelComamnd
+	public interface IBurnableFuel
 	{
 		float GetCurentFuelLevel();
 		void SetCurentFuelLevel(float newValue);
@@ -67,7 +67,7 @@ namespace OtusTankClear
 	}
 
 
-	public class BurnFuelAdapter : IBurnFuelComamnd
+	public class BurnFuelAdapter : IBurnableFuel
 	{
 		readonly IUObject Obj;
 		public BurnFuelAdapter(IUObject Obj)
@@ -101,8 +101,8 @@ namespace OtusTankClear
 
 	public class BurnFuel : ICommand
 	{
-		readonly IBurnFuelComamnd burn;
-		public BurnFuel(IBurnFuelComamnd burn)
+		readonly IBurnableFuel burn;
+		public BurnFuel(IBurnableFuel burn)
 		{
 			this.burn = burn;
 		}
